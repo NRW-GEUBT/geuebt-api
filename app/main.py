@@ -5,7 +5,7 @@ import uvicorn
 
 
 if __name__ == "__main__":
-    load_dotenv(".env", override=True)
+    load_dotenv("dotenv/fastapi.env", override=True)
     uvicorn.run(
         "server.app:app",
         host=os.environ.get('API_HOST'),
