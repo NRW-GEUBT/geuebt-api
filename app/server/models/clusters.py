@@ -41,9 +41,9 @@ class _PublicAnnotation(BaseModel):
 
 
 class _Priority(BaseModel):
-    level: int
+    level: Optional[int] | None = 5
     date: Optional[datetime.datetime] | None = datetime.datetime.now()
-    user: str
+    user: Optional[str] = "system.default"
     history: Optional[_Priority] | None = None
 
 
