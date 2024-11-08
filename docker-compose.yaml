@@ -2,11 +2,13 @@ services:
 
   mongo:
     image: mongo:8.0-rc
-    container_name: geuebt-mongo
-    restart: always
+    container_name: mongo
+    restart: unless-stopped
     env_file: dotenv/mongo.env
+    networks:
+      - geuebt_backend
     ports:
-      - 27017:27017
+      - '0.0.0.0:27017:27017'
     volumes:
       - mongo_db:/data/db:rw
       - logfiles:/var/log/mongodb:rw
@@ -18,20 +20,25 @@ services:
   #   build:
   #     context: .
   #     dockerfile: Dockerfile
+  #   container_name: fastapi
   #   restart: unless-stopped
-  #   container_name: geuebt-fastapi
+  #   env_file: dotenv/fastapi.env
+  #   networks:
+  #     - geuebt_backend
   #   ports:
-  #     - 8081:8081  # NOTE: do not expose in production
+  #     - 8080:8080
   #   depends_on:
   #     - mongo
 
   mongo-express:
     image: mongo-express
-    container_name: geuebt-mongo-express
-    restart: always
+    container_name: mongo-express
+    restart: unless-stopped
     env_file: dotenv/mongo.env
+    networks:
+      - geuebt_backend
     ports:
-      - 8080:8080
+      - '0.0.0.0:8081:8081'
     depends_on:
       - mongo
 
@@ -42,3 +49,7 @@ volumes:
     external: true
   logfiles:
     external: true
+
+networks:
+  geuebt_backend:
+    name: geuebt_backend
